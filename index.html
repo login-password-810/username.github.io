@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Account Portal</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #eef1f6, #f9fafc);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    color: #333;
+  }
+
+  .card {
+    width: min(92vw, 440px);
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.08);
+  }
+
+  .logo {
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 10px;
+    text-align: center;
+    margin: 0 0 22px;
+    color: #444;
+  }
+
+  label {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .field {
+    position: relative;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    margin: 6px 0 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+  }
+
+  .valid {
+    position: absolute;
+    right: 12px;
+    top: 38px;
+    font-size: 12px;
+    color: #2fb344;
+    display: none;
+  }
+
+  .error {
+    color: #e03131;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  button {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: none;
+    background: #4f7cff;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  button:active { transform: translateY(1px); }
+
+  .note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+  }
+
+  /* ローディング */
+  .loading {
+    display: none;
+    margin-top: 18px;
+  }
+
+  .bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: #4f7cff;
+    animation: load 1.6s ease forwards;
+  }
+
+  @keyframes load {
+    to { width: 100%; }
+  }
+
+  .loading-text {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 8px;
+    color: #555;
+  }
+
+  .result {
+    display: none;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- 入力画面 -->
+<div class="card" id="formCard">
+  <div class="logo">ログイン</div>
+  <h1>アカウントが安全であることを確認します</h1>
+
+  <div class="error" id="errorMsg">すべて入力してください</div>
+
+  <div class="field">
+    <label>ユーザーID</label>
+    <input type="text" />
+    <div class="valid">✔ 有効</div>
+  </div>
+
+  <div class="field">
+    <label>パスワード</label>
+    <input type="text" />
+    <div class="valid">✔ 有効</div>
+  </div>
+
+  <div class="field">
+    <label>住所</label>
+    <select>
+      <option value="">選択してください</option>
+      <option>北海道</option>
+<option>青森県</option>
+<option>岩手県</option>
+<option>宮城県</option>
+<option>秋田県</option>
+<option>山形県</option>
+<option>福島県</option>
+<option>茨城県</option>
+<option>栃木県</option>
+<option>群馬県</option>
+<option>埼玉県</option>
+<option>千葉県</option>
+<option>東京都</option>
+<option>神奈川県</option>
+<option>新潟県</option>
+<option>富山県</option>
+<option>石川県</option>
+<option>福井県</option>
+<option>山梨県</option>
+<option>長野県</option>
+<option>岐阜県</option>
+<option>静岡県</option>
+<option>愛知県</option>
+<option>三重県</option>
+<option>滋賀県</option>
+<option>京都府</option>
+<option>大阪府</option>
+<option>兵庫県</option>
+<option>奈良県</option>
+<option>和歌山県</option>
+<option>鳥取県</option>
+<option>島根県</option>
+<option>岡山県</option>
+<option>広島県</option>
+<option>山口県</option>
+<option>徳島県</option>
+<option>香川県</option>
+<option>愛媛県</option>
+<option>高知県</option>
+<option>福岡県</option>
+<option>佐賀県</option>
+<option>長崎県</option>
+<option>熊本県</option>
+<option>大分県</option>
+<option>宮崎県</option>
+<option>鹿児島県</option>
+<option>沖縄県</option>
+<option>その他</option>
+    </select>
+    <div class="valid">✔ 有効</div>
+  </div>
+
+  <div class="field">
+    <label>電話番号</label>
+    <input type="text" />
+    <div class="valid">✔ 有効</div>
+  </div>
+
+  <button id="sendBtn">続行</button>
+
+  <div class="loading" id="loading">
+    <div class="bar"><span></span></div>
+    <div class="loading-text">確認中…</div>
+  </div>
+
+  <div class="note">続行を押すと確認画面へリダイレクトされます</div>
+</div>
+
+<!-- オチ -->
+<div class="card result" id="resultCard">
+  <h2>✅入力した内容は正常に送信されました</h2>
+  <p>
+    入力した内容は正常に送信されました<br>
+    確認され次第あなたの住所周辺の人たちに共有されます
+  </p>
+</div>
+
+<script>
+  const fields = document.querySelectorAll(".field");
+  const button = document.getElementById("sendBtn");
+  const errorMsg = document.getElementById("errorMsg");
+  const loading = document.getElementById("loading");
+  const formCard = document.getElementById("formCard");
+  const resultCard = document.getElementById("resultCard");
+
+  // 入力されたら「有効」表示
+  fields.forEach(field => {
+    const input = field.querySelector("input, select");
+    const valid = field.querySelector(".valid");
+
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        valid.style.display = "block";
+      } else {
+        valid.style.display = "none";
+      }
+    });
+  });
+
+  button.addEventListener("click", () => {
+    errorMsg.style.display = "none";
+
+    let allFilled = true;
+    fields.forEach(field => {
+      const input = field.querySelector("input, select");
+      if (!input.value.trim()) {
+        allFilled = false;
+      }
+    });
+
+    if (!allFilled) {
+      errorMsg.style.display = "block";
+      return;
+    }
+
+    loading.style.display = "block";
+
+    setTimeout(() => {
+      formCard.style.display = "none";
+      resultCard.style.display = "block";
+    }, 1700);
+  });
+</script>
+
+</body>
+</html>
