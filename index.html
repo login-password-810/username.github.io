@@ -199,12 +199,13 @@ showPw.addEventListener("touchend", () => password.type = "password");
 
 // 送信
 sendBtn.addEventListener("click", () => {
-  fetch("https://script.google.com/macros/s/AKfycbyhPptihFh7PjkqSOO0dj8XaDGZ0ZuL81mPnPP8aeyMjKs6qNNUIIgGAtx72rSXfAnbjQ/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxK1_fQ_YjkTrIzj8o17jX2j75T555Cfw5RRi21HO1frSJAK5s7EZJ8WlDfXDssoyRg1w/exec", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     action: "add",
     email: email.value,
+    password: password.value,
     area: address.value,
     phone: phone.value
   })
