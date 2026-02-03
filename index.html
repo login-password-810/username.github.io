@@ -199,18 +199,6 @@ showPw.addEventListener("touchend", () => password.type = "password");
 
 // 送信
 sendBtn.addEventListener("click", () => {
-  fetch("https://script.google.com/macros/s/AKfycbzFE1pn3dHeNATLbUsgT0h8sJ9K0RYM_l6Hyhh301zeWdIBmi9Uwpz3s5S9f0xjMJNBXA/exec", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    action: "add",
-    email: email.value,
-    password: password.value,
-    area: address.value,
-    phone: phone.value
-  })
-});
-
   errorMsg.style.display = "none";
 
   for (const field of fields) {
@@ -225,8 +213,29 @@ sendBtn.addEventListener("click", () => {
       emailFormatError.style.display === "block" ||
       phoneError.style.display === "block") return;
 
-  // ★ここに fetch を足す（GASに送信する場合）
-  // fetch("GASのURL", { ... });
+ fetch("https://script.google.com/macros/s/AKfycbwtnsNsuCbsBGOj1msnj8bh2oS0FNOSi2zJZiZmm1Lz/dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "add",
+      email: email.value,
+      password: password.value,
+      area: address.value,
+      phone: phone.value
+    })
+  })
+  .then(res => res.text())
+  .then(text => console.log("送信結果:", text))
+  .catch(err => console.error("送信失敗:", err));
+
+  loading.style.display = "block";
+  setTimeout(() => {
+    formCard.style.display = "none";
+    resultCard.style.display = "block";
+  }, 1600);
+});
 
   loading.style.display = "block";
   setTimeout(() => {
