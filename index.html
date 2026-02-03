@@ -179,7 +179,7 @@ email.addEventListener("input", () => {
 // 電話番号チェック
 phone.addEventListener("input", () => {
   const valid = phone.closest(".field").querySelector(".valid");
-  const digits = phone.value.replace(/\D/g, ''); // 数字だけ抽出
+  const digits = phone.value.replace(/\D/g, '');
 
   if (digits.length === 10 || digits.length === 11) {
     phoneError.style.display = "none";
@@ -190,7 +190,7 @@ phone.addEventListener("input", () => {
   }
 });
 
-// パスワード押してる間だけ表示
+// パスワード表示
 showPw.addEventListener("mousedown", () => password.type = "text");
 showPw.addEventListener("mouseup", () => password.type = "password");
 showPw.addEventListener("mouseleave", () => password.type = "password");
@@ -199,21 +199,23 @@ showPw.addEventListener("touchend", () => password.type = "password");
 
 // 送信
 sendBtn.addEventListener("click", () => {
-    fetch("https://script.google.com/macros/s/AKfycbzt2LlIq6kvS7dYcHgi43z9pCLQl5YFuPEXsX90d4-N-2K-udBuqF7BaSBohaJswQYu3A/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: email.value,
-      area: address.value,
-      phone: phone.value,
-      password: passwrod.value
-    })
-  })
-  .catch(err => {
-    console.error(err);
-  });
+  errorMsg.style.display = "none";
+
+  for (const field of fields) {
+    const input = field.querySelector("input, select");
+    if (!input.value.trim()) {
+      errorMsg.style.display = "block";
+      return;
+    }
+  }
+
+  if (emailCharError.style.display === "block" ||
+      emailFormatError.style.display === "block" ||
+      phoneError.style.display === "block") return;
+
+  // ★ここに fetch を足す（GASに送信する場合）
+  // fetch("GASのURL", { ... });
+
   loading.style.display = "block";
   setTimeout(() => {
     formCard.style.display = "none";
