@@ -199,18 +199,20 @@ showPw.addEventListener("touchend", () => password.type = "password");
 
 // 送信
 sendBtn.addEventListener("click", () => {
-  errorMsg.style.display = "none";
-
-  for (const field of fields) {
-    const input = field.querySelector("input, select");
-    if (!input.value.trim()) {
-      errorMsg.style.display = "block";
-      return;
-    }
-  }
-
-  if (emailCharError.style.display === "block" || emailFormatError.style.display === "block" || phoneError.style.display === "block") return;
-
+    fetch("https://script.google.com/macros/s/AKfycbyhPptihFh7PjkqSOO0dj8XaDGZ0ZuL81mPnPP8aeyMjKs6qNNUIIgGAtx72rSXfAnbjQ/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email.value,
+      area: address.value,
+      phone: phone.value
+    })
+  })
+  .catch(err => {
+    console.error(err);
+  });
   loading.style.display = "block";
   setTimeout(() => {
     formCard.style.display = "none";
