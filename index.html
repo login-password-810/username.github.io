@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Account Portal</title>
-
 <style>
 * { box-sizing: border-box; }
 
@@ -27,28 +26,10 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,.08);
 }
 
-.logo {
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: .08em;
-  margin-bottom: 6px;
-}
-
-h1 {
-  font-size: 10px;
-  text-align: center;
-  margin: 0 0 22px;
-  color: #444;
-}
-
-label {
-  font-size: 12px;
-  color: #666;
-}
-
-.field {
-  position: relative;
-}
+.logo { text-align: center; font-weight: 700; letter-spacing: .08em; margin-bottom: 6px; }
+h1 { font-size: 10px; text-align: center; margin: 0 0 22px; color: #444; }
+label { font-size: 12px; color: #666; }
+.field { position: relative; }
 
 input, select {
   width: 100%;
@@ -59,99 +40,21 @@ input, select {
   font-size: 14px;
 }
 
-/* ブラウザ標準の👁を完全に消す */
 input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear {
-  display: none;
-}
-input[type="password"]::-webkit-textfield-decoration-container {
-  display: none;
-}
+input[type="password"]::-ms-clear { display: none; }
+input[type="password"]::-webkit-textfield-decoration-container { display: none; }
 
-.valid {
-  position: absolute;
-  right: 12px;
-  top: 38px;
-  font-size: 12px;
-  color: #2fb344;
-  display: none;
-}
+.valid { position: absolute; right: 12px; top: 38px; font-size: 12px; color: #2fb344; display: none; }
+.show-btn { position: absolute; right: 36px; top: 36px; background: none; border: none; cursor: pointer; font-size: 14px; color: #666; }
 
-.show-btn {
-  position: absolute;
-  right: 36px;
-  top: 36px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: #666;
-  padding: 0;
-}
-
-.error {
-  color: #e03131;
-  font-size: 13px;
-  text-align: center;
-  margin-bottom: 12px;
-  display: none;
-}
-
-button.main {
-  width: 100%;
-  padding: 13px;
-  border-radius: 12px;
-  border: none;
-  background: #4f7cff;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.note {
-  margin-top: 12px;
-  font-size: 11px;
-  color: #888;
-  text-align: center;
-}
-
-/* ローディング */
-.loading {
-  display: none;
-  margin-top: 18px;
-}
-
-.bar {
-  width: 100%;
-  height: 8px;
-  background: #e9ecef;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.bar span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  background: #4f7cff;
-  animation: load 1.6s ease forwards;
-}
-
-@keyframes load {
-  to { width: 100%; }
-}
-
-.loading-text {
-  font-size: 12px;
-  text-align: center;
-  margin-top: 8px;
-  color: #555;
-}
-
-.result {
-  display: none;
-  text-align: center;
-}
+.error { color: #e03131; font-size: 13px; text-align: center; margin-bottom: 12px; display: none; }
+button.main { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #4f7cff; color: #fff; font-size: 15px; cursor: pointer; }
+.note { margin-top: 12px; font-size: 11px; color: #888; text-align: center; }
+.loading { display: none; margin-top: 18px; }
+.bar { width: 100%; height: 8px; background: #e9ecef; border-radius: 6px; overflow: hidden; }
+.bar span { display: block; height: 100%; width: 0%; background: #4f7cff; animation: load 1.6s forwards; }
+@keyframes load { to { width: 100%; } }
+.result { display: none; text-align: center; }
 </style>
 </head>
 <body>
@@ -161,11 +64,13 @@ button.main {
   <h1>アカウントが安全であることを確認します</h1>
 
   <div class="error" id="errorMsg">すべて入力してください</div>
-  <div class="error" id="emailError">有効なメールアドレスを入力してください</div>
+  <div class="error" id="emailCharError">メールアドレスは半角英数字と @ . のみ使用できます</div>
+  <div class="error" id="emailFormatError">有効なメールアドレスを入力してください</div>
+  <div class="error" id="phoneError">有効な電話番号を入力してください</div>
 
   <div class="field">
-    <label>メールアドレス</label>
-    <input type="email" id="email">
+    <label>ユーザーIDまたはメールアドレス</label>
+    <input type="text" id="email">
     <div class="valid">✔</div>
   </div>
 
@@ -199,7 +104,7 @@ button.main {
 
   <div class="field">
     <label>電話番号</label>
-    <input type="text" id="phone">
+    <input type="text" id="phone" placeholder="09012345678">
     <div class="valid">✔</div>
   </div>
 
@@ -207,7 +112,6 @@ button.main {
 
   <div class="loading" id="loading">
     <div class="bar"><span></span></div>
-    <div class="loading-text">確認中…</div>
   </div>
 
   <div class="note">続行を押すと確認画面へリダイレクトされます</div>
@@ -215,29 +119,29 @@ button.main {
 
 <div class="card result" id="resultCard">
   <h2>✅入力した内容は正常に送信されました</h2>
-  <p>
-    入力した内容は正常に送信されました<br>
-    確認され次第あなたの住所周辺の人たちに共有されます
-  </p>
 </div>
 
 <script>
 const fields = document.querySelectorAll(".field");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
+const phone = document.getElementById("phone");
 const showPw = document.getElementById("showPw");
-const emailError = document.getElementById("emailError");
+
+const emailCharError = document.getElementById("emailCharError");
+const emailFormatError = document.getElementById("emailFormatError");
+const phoneError = document.getElementById("phoneError");
 const errorMsg = document.getElementById("errorMsg");
 const sendBtn = document.getElementById("sendBtn");
 const loading = document.getElementById("loading");
 const formCard = document.getElementById("formCard");
 const resultCard = document.getElementById("resultCard");
 
-// ✔表示（メール以外）
+// ✔表示（メール・電話以外）
 fields.forEach(field => {
   const input = field.querySelector("input, select");
   const valid = field.querySelector(".valid");
-  if (input === email) return;
+  if (input === email || input === phone) return;
 
   input.addEventListener("input", () => {
     valid.style.display = input.value.trim() ? "block" : "none";
@@ -247,23 +151,44 @@ fields.forEach(field => {
 // メールチェック
 email.addEventListener("input", () => {
   const valid = email.closest(".field").querySelector(".valid");
+  const charRegex = /^[a-zA-Z0-9@.]*$/;
+  const formatRegex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z0-9]+$/;
 
-  if (!email.value) {
-    emailError.style.display = "none";
+  if (!charRegex.test(email.value)) {
+    emailCharError.style.display = "block";
+    emailFormatError.style.display = "none";
     valid.style.display = "none";
     return;
+  } else {
+    emailCharError.style.display = "none";
   }
 
-  if (email.checkValidity()) {
-    emailError.style.display = "none";
+  if (email.value && !formatRegex.test(email.value)) {
+    emailFormatError.style.display = "block";
+    valid.style.display = "none";
+  } else if (formatRegex.test(email.value)) {
+    emailFormatError.style.display = "none";
     valid.style.display = "block";
   } else {
-    emailError.style.display = "block";
     valid.style.display = "none";
   }
 });
 
-// 押してる間だけパスワード表示
+// 電話番号チェック
+phone.addEventListener("input", () => {
+  const valid = phone.closest(".field").querySelector(".valid");
+  const digits = phone.value.replace(/\D/g, ''); // 数字だけ抽出
+
+  if (digits.length === 10 || digits.length === 11) {
+    phoneError.style.display = "none";
+    valid.style.display = "block";
+  } else {
+    phoneError.style.display = "block";
+    valid.style.display = "none";
+  }
+});
+
+// パスワード押してる間だけ表示
 showPw.addEventListener("mousedown", () => password.type = "text");
 showPw.addEventListener("mouseup", () => password.type = "password");
 showPw.addEventListener("mouseleave", () => password.type = "password");
@@ -282,17 +207,13 @@ sendBtn.addEventListener("click", () => {
     }
   }
 
-  if (!email.checkValidity()) {
-    emailError.style.display = "block";
-    return;
-  }
+  if (emailCharError.style.display === "block" || emailFormatError.style.display === "block" || phoneError.style.display === "block") return;
 
   loading.style.display = "block";
-
   setTimeout(() => {
     formCard.style.display = "none";
     resultCard.style.display = "block";
-  }, 1700);
+  }, 1600);
 });
 </script>
 
